@@ -1,0 +1,13 @@
+{
+  "title": "concentraitor",
+  "name": "concentraitor",
+  "version": "0.0.1",
+  "description": "huh",
+  "main": "background-bundle.js",
+  "author": "dmac n da crew",
+  "engines": {
+    "firefox": ">=38.0a1",
+    "fennec": ">=38.0a1"
+  },
+  "license": "GPL-3.0"
+}

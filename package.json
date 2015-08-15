@@ -1,0 +1,13 @@
+{
+  "name": "zalgoify",
+  "version": "0.0.0",
+  "license": "GPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/cosmicexplorer/concentraitor.git"
+  },
+  "devDependencies": {
+    "browserify": "^11.0.0",
+    "coffee-script": "^1.9.3"
+  }
+}
