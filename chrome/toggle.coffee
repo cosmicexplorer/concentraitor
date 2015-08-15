@@ -1,12 +1,43 @@
-act = chrome.browserAction
+SetupReplacements = require '../common/setup-replacements'
 
-activationState = on
+act = chrome.browserAction
+doReplacement = no
+replacements = null
 
 act.onClicked.addListener (tab) ->
-  activationState = not activationState
-  act.setIcon path: (if activationState then onIcon else offIcon)
-  console.log (if activationState then "activated" else "deactivated")
+  if replacements?
+    doReplacement = not doReplacement
+    if doReplacement
+      iconPath = 'res/imposter19.png'
+    else
+      iconPath = 'res/imposter19off.png'
+    act.setIcon path: iconPath
+    console.log "set imposters replacement to #{doReplacement}"
+
+setup = ->
+  act.setIcon path: 'res/imposter19off.png'
+  replacements = null
+
+success = (resp) ->
+  if resp
+    replacements = resp
+    act.setIcon path: 'res/imposter19.png'
+    doReplacement = yes
+
+failure = (resp) ->
+  if resp
+    replacements = resp
+    act.setIcon path: 'res/imposter19.png'
+    doReplacement = yes
+
+setupReplacements = -> SetupReplacements setup, success, failure
 
 chrome.runtime.onMessage.addListener (req, sender, sendResponse) ->
   switch req
-    when 'get-activation-state' then sendResponse activationState
+    when 'get-do-replacement' then sendResponse doReplacement
+    when 'get-replacement-obj' then sendResponse replacements
+    when 'setup-replacements'
+      # removing cache here doesn't actually work either, but whatever
+      chrome.browsingData.removeCache {}, setupReplacements
+
+setupReplacements()

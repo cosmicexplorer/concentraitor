@@ -22,6 +22,7 @@
     "activeTab",
     "browsingData"
   ],
+  "options_page": "options.html",
   "icons": {
     "19": "res/imposter19.png",
     "48": "res/imposter48.png",
