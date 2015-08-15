@@ -1,4 +1,4 @@
-Replace = require '../common/replace-all'
+Replace = require '../common/zalgify-impl'
 
 self.port.emit 'get-do-replacement'
 

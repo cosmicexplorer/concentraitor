@@ -16,17 +16,17 @@ COMMON_DIR := common
 COFFEE_COMMON := $(wildcard $(COMMON_DIR)/*.coffee)
 
 CHROME_DIR := chrome
-CHROME_INJECT_IN := $(COMMON_DIR)/zalgoify.js $(CHROME_DIR)/replace.js
+CHROME_INJECT_IN := $(COMMON_DIR)/zalgify-impl.js $(CHROME_DIR)/replace.js
 CHROME_INJECT_BUNDLE := $(CHROME_DIR)/inject-bundle.js
-CHROME_BACKGROUND_IN := $(CHROME_DIR)/toggle.js
+CHROME_BACKGROUND_IN := $(COMMON_DIR)/setup-urls.js $(CHROME_DIR)/toggle.js
 CHROME_BACKGROUND_BUNDLE := $(CHROME_DIR)/background-bundle.js
 
 FF_DIR := firefox
 FF_DATA_DIR := $(FF_DIR)/data
-FF_INJECT_IN := $(FF_DIR)/replace.js $(COMMON_DIR)/replace-all.js
+FF_INJECT_IN := $(FF_DIR)/replace.js $(COMMON_DIR)/zalgify-impl.js
 FF_INJECT_BUNDLE := $(FF_DATA_DIR)/inject-bundle.js
 FF_IGNORE := sdk/self sdk/ui/button/action sdk/tabs net/xhr
-FF_BACKGROUND_IN := $(COMMON_DIR)/setup-replacements.js \
+FF_BACKGROUND_IN := $(COMMON_DIR)/setup-urls.js \
 	$(FF_DIR)/toggle.js
 FF_BACKGROUND_BUNDLE := $(FF_DIR)/background-bundle.js
 

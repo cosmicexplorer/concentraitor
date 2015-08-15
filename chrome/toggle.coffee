@@ -1,43 +1,49 @@
-SetupReplacements = require '../common/setup-replacements'
+SetupUrls = require '../common/setup-urls'
 
 act = chrome.browserAction
 doReplacement = no
-replacements = null
+urls = null
+
+iconOn = 'res/imposter19.png'
+iconOff = 'res/imposter19off.png'
 
 act.onClicked.addListener (tab) ->
-  if replacements?
+  if urls?
     doReplacement = not doReplacement
     if doReplacement
-      iconPath = 'res/imposter19.png'
+      iconPath = iconOn
     else
-      iconPath = 'res/imposter19off.png'
+      iconPath = iconOff
     act.setIcon path: iconPath
-    console.log "set imposters replacement to #{doReplacement}"
+    console.log "set concentraitor replacement to #{doReplacement}"
 
 setup = ->
-  act.setIcon path: 'res/imposter19off.png'
-  replacements = null
+  act.setIcon path: iconOff
+  urls = null
 
 success = (resp) ->
   if resp
-    replacements = resp
-    act.setIcon path: 'res/imposter19.png'
+    urls = resp
+    act.setIcon path: iconOn
     doReplacement = yes
 
 failure = (resp) ->
   if resp
-    replacements = resp
-    act.setIcon path: 'res/imposter19.png'
+    urls = resp
+    act.setIcon path: iconOn
     doReplacement = yes
 
-setupReplacements = -> SetupReplacements setup, success, failure
+setupUrls = -> SetupUrls setup, success, failure
 
 chrome.runtime.onMessage.addListener (req, sender, sendResponse) ->
   switch req
     when 'get-do-replacement' then sendResponse doReplacement
-    when 'get-replacement-obj' then sendResponse replacements
-    when 'setup-replacements'
+    when 'get-urls-obj' then sendResponse
+      hosts: urls
+      freq: .5
+      intensity: 6
+    when 'setup-urls'
       # removing cache here doesn't actually work either, but whatever
-      chrome.browsingData.removeCache {}, setupReplacements
+      chrome.browsingData.removeCache {}, setupUrls
 
-setupReplacements()
+setupUrls()

@@ -1,5 +1,5 @@
 {
-  "name": "zalgoify",
+  "name": "concentraitor",
   "version": "0.0.0",
   "license": "GPL-3.0",
   "repository": {
@@ -9,5 +9,9 @@
   "devDependencies": {
     "browserify": "^11.0.0",
     "coffee-script": "^1.9.3"
+  },
+  "dependencies": {
+    "replace-all-text-nodes": "0.0.4",
+    "zalgify": "0.0.0"
   }
 }
