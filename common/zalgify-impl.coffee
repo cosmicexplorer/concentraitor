@@ -1,12 +1,14 @@
 Zalgify = require 'zalgify'
-ReplaceText = require 'replace-all-text-nodes'
+ReplaceTextNodes = require 'replace-all-text-nodes'
+
+escapeRegexp = (str) -> str.replace /[-\/\\^$*+?.()|[\]{}]/g, '\\$&'
 
 shouldZalgo = (hosts) ->
-  hosts.some (host) -> host is location.hostname
+  hosts.some (host) -> location.hostname.match new RegExp escapeRegexp host
 
 zalgifyPage = (freq, intensity) ->
-  obsv = ReplaceTextNodes.replaceAllInPage ((txt) ->
-    Zalgify txt, freq, intensity),
+  replaceFn = (txt) -> Zalgify txt, freq, intensity if txt
+  obsv = ReplaceTextNodes.replaceAllInPage replaceFn,
     timeouts: [500, 1000, 2000]
     futureNodesToo: yes
   setTimeout (-> obsv.observe document,
