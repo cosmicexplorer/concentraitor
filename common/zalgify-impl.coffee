@@ -7,6 +7,7 @@ shouldZalgo = (hosts) ->
   hosts.some (host) -> location.hostname.match new RegExp escapeRegexp host
 
 zalgifyPage = (freq, intensity) ->
+  console.log freq, intensity
   replaceFn = (txt) -> if txt and not Zalgify.isZalgified txt
       Zalgify.zalgify txt, freq, intensity
     else txt
