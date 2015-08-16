@@ -11,6 +11,12 @@ DEPS := $(COFFEE_CC)
 # opts
 COFFEE_OPTS := -bc --no-header
 
+# js libs
+ZALGIFY := zalgify
+REPLACE_TEXT := replace-all-text-nodes
+BROWSERIFY_TARGETS := $(ZALGIFY) $(REPLACE_TEXT)
+BROWSERIFY_REQUIRES := $(patsubst %,-r %,$(BROWSERIFY_TARGETS))
+
 # target-specific stuff
 COMMON_DIR := common
 COFFEE_COMMON := $(wildcard $(COMMON_DIR)/*.coffee)
@@ -42,14 +48,14 @@ $(CHROME_BACKGROUND_BUNDLE): $(CHROME_BACKGROUND_IN) $(BROWSERIFY)
 	$(BROWSERIFY) $(CHROME_BACKGROUND_IN) -o $@
 
 $(CHROME_INJECT_BUNDLE): $(CHROME_INJECT_IN) $(BROWSERIFY)
-	$(BROWSERIFY) $(CHROME_INJECT_IN) -o $@
+	$(BROWSERIFY) $(BROWSERIFY_REQUIRES) $(CHROME_INJECT_IN) -o $@
 
 # require is a built in function here, so we just copy
 $(FF_BACKGROUND_BUNDLE): $(FF_BACKGROUND_IN)
 	cp $(FF_DIR)/toggle.js $@
 
 $(FF_INJECT_BUNDLE): $(FF_INJECT_IN) $(BROWSERIFY)
-	$(BROWSERIFY) $(FF_INJECT_IN) -o $@
+	$(BROWSERIFY) $(BROWSERIFY_REQUIRES) $(FF_INJECT_IN) -o $@
 
 %.js: %.coffee $(COFFEE_CC)
 	$(COFFEE_CC) $(COFFEE_OPTS) $<

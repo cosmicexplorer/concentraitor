@@ -7,7 +7,9 @@ shouldZalgo = (hosts) ->
   hosts.some (host) -> location.hostname.match new RegExp escapeRegexp host
 
 zalgifyPage = (freq, intensity) ->
-  replaceFn = (txt) -> Zalgify txt, freq, intensity if txt
+  replaceFn = (txt) -> if txt and not Zalgify.isZalgified txt
+      Zalgify.zalgify txt, freq, intensity
+    else txt
   obsv = ReplaceTextNodes.replaceAllInPage replaceFn,
     timeouts: [500, 1000, 2000]
     futureNodesToo: yes

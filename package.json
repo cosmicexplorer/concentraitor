@@ -12,6 +12,6 @@
   },
   "dependencies": {
     "replace-all-text-nodes": "0.0.4",
-    "zalgify": "0.0.0"
+    "zalgify": "0.0.1"
   }
 }

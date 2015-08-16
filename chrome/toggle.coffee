@@ -40,8 +40,8 @@ chrome.runtime.onMessage.addListener (req, sender, sendResponse) ->
     when 'get-do-replacement' then sendResponse doReplacement
     when 'get-urls-obj' then sendResponse
       hosts: urls
-      freq: .5
-      intensity: 6
+      freq: .2
+      intensity: .5
     when 'setup-urls'
       # removing cache here doesn't actually work either, but whatever
       chrome.browsingData.removeCache {}, setupUrls
