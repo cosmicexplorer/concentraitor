@@ -1,4 +1,5 @@
 SetupUrls = require '../common/setup-urls'
+ZalgifyLib = require '../common/zalgify-impl'
 
 act = chrome.browserAction
 doReplacement = no
@@ -35,13 +36,31 @@ failure = (resp) ->
 
 setupUrls = -> SetupUrls setup, success, failure
 
+StartTime = null
+
+refreshStartTime = ->
+  if doReplacement
+    chrome.tabs.query {}, (tabs) ->
+      if (tabs.map((t) -> t.url).some (url) -> ZalgifyLib.shouldZalgo urls, url)
+        StartTime = new Date unless StartTime?
+      else
+        StartTime = null
+
+chrome.webNavigation.onCompleted.addListener refreshStartTime
+chrome.tabs.onRemoved.addListener refreshStartTime
+
 chrome.runtime.onMessage.addListener (req, sender, sendResponse) ->
   switch req
     when 'get-do-replacement' then sendResponse doReplacement
-    when 'get-urls-obj' then sendResponse
-      hosts: urls
-      freq: .1
-      intensity: .1
+    when 'get-urls-obj'
+      StartTime = new Date unless StartTime?
+      diffms = new Date - StartTime
+      diffMins = Math.round diffms % 86400000 % 3600000 / 60000
+      freqIntensity = ZalgifyLib.getZalgifyFreqIntensity diffMins
+      sendResponse
+        hosts: urls
+        freq: freqIntensity
+        intensity: freqIntensity
     when 'setup-urls'
       # removing cache here doesn't actually work either, but whatever
       chrome.browsingData.removeCache {}, setupUrls
