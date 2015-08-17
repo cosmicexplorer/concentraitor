@@ -4,7 +4,10 @@ ReplaceTextNodes = require 'replace-all-text-nodes'
 escapeRegexp = (str) -> str.replace /[-\/\\^$*+?.()|[\]{}]/g, '\\$&'
 
 shouldZalgo = (hosts, url) ->
-  hosts.some (host) -> url.match new RegExp "^https?://" + escapeRegexp host
+  hosts.some (host) ->
+    escaped = "^https?://(www\\.)?" + escapeRegexp host
+    console.log escaped
+    url.match new RegExp escaped, "gi"
 
 zalgifyPage = (freq, intensity) ->
   console.log freq, intensity
